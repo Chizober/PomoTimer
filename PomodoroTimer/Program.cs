@@ -1,53 +1,59 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Diagnostics;
 namespace PomodoroTimer
 {
   
   class Timer{
-    public  void WorkCount()
+    public  void WorkCount(int work_time,int work_duration=0)
     { 
-        int work_duration = 25;
-        for(int i =work_duration; i>=0; i--)
+        for(int i =work_time; i>=0; i--)
         {
-        Console.WriteLine("Work countdown : " + i  + " minutes");
+        Console.WriteLine("Work countdown... " + i  + " Second(s)");
        
          Thread.Sleep(1000);
          Console.Clear();
         }
-       Console.WriteLine("Work  completed in : " + work_duration  + " minutes");
+       Console.WriteLine("Work  completed in : " + work_time  + " Second(s)");
     }
 
-     public void RestCount()
+     public void RestCount(int rest_time,int rest_duration=0)
     {
-         int rest_duration = 5;
-      for(int i =rest_duration; i>=0; i--)
+      for(int i =rest_time; i>=0; i--)
        {
-           Console.WriteLine("rest : " + i  + " minutes");
+           Console.WriteLine("rest : " + i  + " Second(s)");
            Thread.Sleep(1000);
            Console.Clear();
        }
-           Console.WriteLine("rest  completed in : " + rest_duration  + "minutes");
+           Console.WriteLine("rest  completed in : " + rest_time  + "Second(s)");
      }
   }
   class Program{
     static void Main(string[] args)
     {
-         Thread mainThread = Thread.CurrentThread;
-         Stopwatch stopwatch = new Stopwatch();
-         stopwatch.Stop();
-         TimeSpan totalTime = stopwatch.Elapsed;
-         stopwatch.Start();
-        Timer work  = new Timer();
-        Console.WriteLine("Please enter an activity");
-        mainThread.Name = Console.ReadLine();
-        work.WorkCount();
-        Console.WriteLine("Please enter another activity");
-        mainThread.Name = Console.ReadLine();
-        Timer rest  = new Timer();
-        rest.RestCount();
-        Console.WriteLine($"Total time for the session is {0:00}:{1:00}:{2:00} ", totalTime.Hours,totalTime.Minutes, totalTime.Seconds);
-        Console.ReadKey();
+        int rest_time; int work_time; 
+      Console.WriteLine("please enter an activity");
+      var one = (Console.ReadLine());
+      Stopwatch stopwatch = new Stopwatch();
+      stopwatch.Start();
+      Console.WriteLine("Enter a time in minutes for your activity");
+      int work_duration =Convert.ToInt32(Console.ReadLine());;
+      work_time = Convert.ToInt32(work_duration) * 60;
+      Thread.Sleep(work_time);
+      Console.WriteLine("please enter another activity");
+      var two = (Console.ReadLine());
+      Console.WriteLine("Enter a time in minutes for your activity");
+      int rest_duration =Convert.ToInt32(Console.ReadLine());;
+      rest_time = Convert.ToInt32(rest_duration) * 60;
+      Timer work  = new Timer();
+      work.WorkCount(work_time);
+      Timer rest  = new Timer();
+      rest.RestCount(rest_time);
+      stopwatch.Stop();
+      TimeSpan totalTime = stopwatch.Elapsed;
+      string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",totalTime.Hours, totalTime.Minutes, totalTime.Seconds,totalTime.Milliseconds/10);
+      Console.WriteLine($"Total time for the session is {elapsedTime}");
+      Console.ReadKey();
     }
   }
 }
